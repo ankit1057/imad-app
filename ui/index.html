@@ -1,7 +1,93 @@
-<!DOCTYPE html> 
-<html lang="en"> 
-<head> 
-<title>Ankit's IMAD profile</title> 
-<meta charset="utf-8"> 
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="static/style.css"> </head> <body> <div class="container text-center full-height"> <div class="row content"> <div class="col-sm-4 sidenav"> <div class="thumbnail"> <!-- Change the link in the src attribute below to an image available on the Internet --> <img src="https://scontent-bom1-1.xx.fbcdn.net/v/t1.0-9/21728401_995859303887898_1923564598725400017_n.jpg?oh=a27c085124404132518c80fc2515fb5d&oe=5B032D44" alt="Lights" style="width:100%" /> </div> <h2 align="center"><b>Ankit</b></h2> <p align="center">Student,<br>University of Engineering and Management,<br>Jaipur,Rajasthan.</p> </div> <div class="col-sm-8 text-left"> <h3>About me</h3> <p>An Ex-Raist,Pursuing Graduation in Computer Applications.</p> <hr> <h3>Education</h3> <p>Studied at Motilal Nehru School Of Sports,Rai,Sonipat</p> <hr> <h3>Experience</h3> <p>Lead Android Developer at Teknesya Networks Private Limited</p> <hr> <h3>A cool thing I've done recently</h3> <p>Went to Swim in THe Indra Gandhi Canal At 1 am in the night to enjoy the moonlight :)<p> <hr> <a href="https://twitter.com/share" class="twitter-share-button" data-size="large" data-text="I just built #myfirstapp with #imad! @HasuraEd. Check it out here - " data-show-count="false">Tweet</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script> <iframe id="fb_share" src="" width="84" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe> <script> var current_url = window.location.href; document.getElementById("fb_share").src="https://www.facebook.com/plugins/share_button.php?href="+current_url+"&layout=button_count&size=large&mobile_iframe=true&appId&width=84&height=28"; </script> </div> </div> </div> <footer class="container-fluid text-center footer"> And i'm really Loving this course:):):):):). </footer> </body> </html>
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.teal-blue.min.css">
+<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+<script src="https://marc-inc.github.io/l10n.js"></script>
+<link rel="localizations" href="../localisations/i18n.json" type="application/l10n+json"/>
+
+<title data-l10n-id="start">Start</title>
+
+<style>
+.mdl-layout__header-row {padding-left:40px;}
+.fab {position:absolute;bottom:25px;right:25px;z-index:50;box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);}
+.fab:active{box-shadow: 0 6px 12px rgba(0,0,0,0.16), 0 6px 12px rgba(0,0,0,0.23);}
+.fab, .fab .material-icons{transition:.3s;}
+.page-content {box-sizing:border-box;}
+.page-content > div {box-sizing:border-box; padding:4px; float:left;}
+.page-content > div > img {box-sizing:border-box; height:calc(100% - 2em); width:100%; object-fit:contain; padding: 4px;}
+.page-content > div > p {box-sizing:border-box; margin:0; padding-top:2px; text-align:center; width:100%; line-height:1em; word-wrap:break-word; text-overflow:ellipsis; word-break:keep-all; font-size: 14px;}
+</style>
+
+</head>
+<body onload="start();" style="background-color:#EEEEEE;">
+
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+	<header class="mdl-layout__header">
+		<div class="mdl-layout__header-row">
+			<span class="mdl-layout-title" data-l10n-id="start">Start</span>
+		</div>
+	</header>
+	<main class="mdl-layout__content">
+		<div class="page-content"></div>
+	</main>
+</div>
+
+<button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored fab" onclick="edit(this);" id="fab"><i class="material-icons">edit</i></button>
+
+<script>
+localStorage.allWebApps = localStorage.allWebApps ? JSON.stringify(JSON.parse(localStorage.allWebApps).sort(function(a,b) {
+	return a.title > b.title ? 1 : (b.title > a.title ? -1 : 0);
+})) : JSON.stringify([]);
+
+var allWebApps = JSON.parse(localStorage.allWebApps || "[]") || [];
+
+var divSize = null;
+function start(){
+	for(columns = 1, x = 178; divSize == null; columns++, x+=86){
+		if(window.innerWidth < x){
+			divSize = window.innerWidth / columns;
+			document.querySelector(".mdl-layout").innerHTML += "<style>.page-content > div{width:" + divSize + "px;height:" + divSize + "px;}</style>";
+		}
+	}
+
+	drawApps();
+
+	if('serviceWorker' in navigator) navigator.serviceWorker.register(window.location.href.substring(0, window.location.href.lastIndexOf("/")) + "/sw.js");
+}
+
+function drawApps(){
+	document.querySelector(".page-content").innerHTML = "";
+	if(allWebApps.length == 0) document.querySelector("#fab").style.display = "none";
+	allWebApps.forEach(function(WebApp){
+		document.querySelector(".page-content").innerHTML += "<div onclick="window.location.href='" + WebApp.url + "';" name="WebApp" id="" + WebApp.installDate + ""><img src="" + WebApp.icon + "" onerror="this.src='../no_icon.webp';"/><p>" + WebApp.title + "</p></div>";
+	});
+	document.querySelector(".page-content").innerHTML += "<div></div>";
+}
+
+function edit(fab){
+	[].slice.call(document.querySelectorAll('[name=WebApp]')).forEach(function(element){
+		if(fab.innerHTML.includes("edit")){
+			element.style.border="1px solid #787878";
+			element.style.borderRadius="10px";
+			element.style.padding="3px";
+			element.onclick = function(){element.style.backgroundColor = element.style.backgroundColor=='rgb(244, 67, 54)' ? '' : 'rgb(244, 67, 54)';};
+		} else if(element.style.backgroundColor=='rgb(244, 67, 54)'){
+			allWebApps = allWebApps.filter(function(el) { return el.installDate !== parseInt(element.id); });
+			localStorage.allWebApps = JSON.stringify(allWebApps);
+		}
+	});
+	var icon = fab.querySelector(".material-icons");
+	if(icon.innerHTML != "edit") drawApps();
+	icon.innerHTML = icon.innerHTML == "edit" ? "delete" : "edit";
+	fab.style.backgroundColor = icon.innerHTML != "edit" ? "#F44336" : "rgb(68,138,255)"
+}
+</script>
+
+</body>
+</html>
